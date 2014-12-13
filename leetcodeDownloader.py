@@ -7,6 +7,7 @@ import json
 from bs4 import BeautifulSoup
 import os
 import sys
+import getpass
 
 def downloadSubmission(session, name, URL):
     '''
@@ -56,8 +57,9 @@ def checkSubmissions(username, password):
                 pass
 
 if __name__ == '__main__':
-    if (len(sys.argv) != 3):
-        print "usage: leetcodeDownloader.py username password"
+    if (len(sys.argv) != 2):
+        print "usage: leetcodeDownloader.py username"
     else:
-        checkSubmissions(sys.argv[1], sys.argv[2])
+    	password = getpass.getpass()
+        checkSubmissions(sys.argv[1], password)
 
