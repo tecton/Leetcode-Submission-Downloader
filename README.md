@@ -7,4 +7,4 @@ A Python helper program that will download your latest accepted submissions.
 Request, BeautifulSoup
 
 ###Usage
-run `leetcodeDownloader username password` to download. Need to input leetcode account info.
+run `leetcodeDownloader username` to download. Need to input leetcode account info.
