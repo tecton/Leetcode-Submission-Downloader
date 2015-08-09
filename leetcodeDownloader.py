@@ -26,8 +26,8 @@ def downloadSubmission(session, name, URL):
     f.close()
 
 def checkSubmissions(username, password):
-    SUBMISSION_URL = 'https://oj.leetcode.com/submissions/'
-    BASE_URL = 'https://oj.leetcode.com'
+    SUBMISSION_URL = 'https://leetcode.com/submissions/'
+    BASE_URL = 'https://leetcode.com'
     s = leetcodeHTTPHelper.getSubmission(username, password)
     if not os.path.exists('code'):
         os.makedirs('code')

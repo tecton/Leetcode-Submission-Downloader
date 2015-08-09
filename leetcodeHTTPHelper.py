@@ -1,6 +1,6 @@
 import requests
 
-URL = 'https://oj.leetcode.com/accounts/login/'
+URL = 'https://leetcode.com/accounts/login/'
 
 s = requests.Session()
 s.get(URL)
