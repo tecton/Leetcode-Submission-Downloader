@@ -9,21 +9,23 @@ import os
 import sys
 import getpass
 
-def downloadSubmission(session, name, URL):
+
+def downloadSubmission(session, name, file_type, URL):
     '''
     parse code from source and save it to file.
     '''
-    filename = 'code/' + name + '.cpp'
+    filename = 'code/' + name + '.' + file_type
     if os.path.isfile(filename):
         return
     r = session.get(URL)
-    code = re.search(r'scope\.code\.cpp\ =\ \'(.*)', r.content).group(1)[:-2] #discard last two characters
+    code = re.search(r'submissionCode\:\ \'([^\']+)\'', r.content).group(1)
     code = code.encode('utf8')
     s = json.loads('{"code": "%s"}' % code)
     print 'add file: ' + filename
     f = open(filename, 'w')
     f.write(s['code'])
     f.close()
+
 
 def checkSubmissions(username, password):
     SUBMISSION_URL = 'https://leetcode.com/submissions/'
@@ -35,7 +37,7 @@ def checkSubmissions(username, password):
     for i in range(1, 10000):
         print 'Check page ' + str(i)
         r = s.get(SUBMISSION_URL + str(i))
-        soup = BeautifulSoup(r.text)
+        soup = BeautifulSoup(r.text, 'html.parser')
         try:
             # delete '\n' between tr tags
             trList = filter(lambda a: a != '\n', list(soup.tbody.children))
@@ -49,17 +51,18 @@ def checkSubmissions(username, password):
             submissionStatus = tr[2]
             try:
                 result = submissionStatus.a.strong.contents[0]
+                file_type = tr[4].contents[0]
                 if (result == 'Accepted'):
                     problemName = tr[1].a.contents[0]
                     codeURL = BASE_URL + submissionStatus.a['href']
-                    downloadSubmission(s, problemName, codeURL)
+                    downloadSubmission(s, problemName, file_type, codeURL)
             except:
                 pass
+
 
 if __name__ == '__main__':
     if (len(sys.argv) != 2):
         print "usage: leetcodeDownloader.py username"
     else:
-    	password = getpass.getpass()
+        password = getpass.getpass()
         checkSubmissions(sys.argv[1], password)
-
